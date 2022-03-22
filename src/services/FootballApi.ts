@@ -1,11 +1,12 @@
 import http from '../http-common'
-import { TopAssistsRequest, TopAssistsResponse } from '../types/api'
+import { TopAssistRequest, TopAssistResponse } from '../types/api'
+// import topAssistsResponseJSON from './response.json'
 
 export default class FootballApiService {
-  static async getTopFootballAssists(
-    payload: TopAssistsRequest,
+  static async getTopAssists(
+    payload: TopAssistRequest,
     timeout = 60000,
-  ): Promise<TopAssistsResponse> {
+  ): Promise<TopAssistResponse> {
     const { data } = await http.get(
       `/players/topassists?season=${payload.season}&league=${payload.league}`,
       {
@@ -13,5 +14,8 @@ export default class FootballApiService {
       },
     )
     return data
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    // return topAssistsResponseJSON
   }
 }
