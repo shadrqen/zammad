@@ -32,6 +32,11 @@ const routes: RouteRecordRaw[] = [
     component: LayoutMain,
     children: mainRoutes,
   },
+  {
+    path: '/assists',
+    props: true,
+    component: () => import('../views/TopAssists.vue'),
+  },
 ]
 
 export default function initializeRouter(app: App): Router {
