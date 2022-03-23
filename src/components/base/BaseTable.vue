@@ -25,9 +25,14 @@
               alt="Player photo"
             />
           </div>
-          <template v-else>
-            {{ columnValue(columnVal) }}
-          </template>
+          <div v-else>
+            <template v-if="typeof columnVal === 'object'">
+              {{ columnVal.date }}
+            </template>
+            <template v-else>
+              {{ columnVal }}
+            </template>
+          </div>
         </td>
       </tr>
       <table-paginator v-bind:paging="paging" />
@@ -44,10 +49,6 @@ defineProps<{
   items: Player[]
   paging: Paging
 }>()
-
-function columnValue(item: string | number | { date: string }) {
-  return typeof item === 'object' ? item.date : item
-}
 </script>
 
 <style scoped></style>
