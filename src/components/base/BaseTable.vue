@@ -18,7 +18,7 @@
           v-bind:key="key || columnKey"
           class="border px-8 py-4"
         >
-          <div v-if="columnKey === 'photo'" class="bg-indigo-300">
+          <div v-if="columnKey && columnVal === 'photo'" class="bg-indigo-300">
             <img
               class="object-cover"
               v-bind:src="columnVal"
