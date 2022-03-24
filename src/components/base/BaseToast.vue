@@ -7,7 +7,7 @@
     >
       <div v-bind:class="`${toastColor} ${toastClass.body} ${bodyBorderColor}`">
         <p class="font-bold text-white flex items-center">
-          {{ toastTitle }} {{ toastColor }}
+          {{ toastTitle }}
         </p>
       </div>
       <div v-bind:class="`${toastColor} ${toastClass.content}`">

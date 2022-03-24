@@ -27,7 +27,7 @@
     v-if="itemsLoaded.complete"
     v-bind:toast-color="toastColor"
     toast-title="Fetching Data"
-    toast-message="Data fetched successfully from the API"
+    v-bind:toast-message="toastMessage"
     toast-id="ultimate-team-toast"
     v-bind:body-border-color="toastBodyBorderColor"
   />
@@ -38,7 +38,11 @@
 import { onMounted, reactive, ref } from 'vue'
 import BaseTable from '../components/base/BaseTable.vue'
 import BaseToast from '../components/base/BaseToast.vue'
-import { getTopAssists, processListItems } from '../composables/assists'
+import {
+  getTopAssists,
+  extractRequestErrors,
+  processListItems,
+} from '../composables/assists'
 
 const headerRows = reactive([
   'ID',
@@ -54,6 +58,9 @@ const headerRows = reactive([
   'Photo',
 ])
 const items = ref()
+const toastColor = ref()
+const toastBodyBorderColor = ref()
+const toastMessage = ref()
 const paging = reactive({
   current: 0,
   total: 0,
@@ -63,23 +70,30 @@ const itemsLoaded = reactive({
   failed: false,
 })
 
-const toastColor = ref(itemsLoaded.failed ? 'bg-green-500' : 'bg-red-600')
-const toastBodyBorderColor = ref(
-  itemsLoaded.failed ? 'border-green-400' : 'border-red-500',
-)
-
 function resetToast() {
   itemsLoaded.complete = false
   itemsLoaded.failed = false
 }
 
+function setToastMessage() {
+  toastMessage.value = itemsLoaded.failed
+    ? 'Failed to load data from the API'
+    : 'Data fetched successfully from the API'
+}
+
 onMounted(async () => {
   const { assistsData, assistsError } = await getTopAssists()
+  assistsError.value = extractRequestErrors(assistsData.value)
   items.value = processListItems(assistsData.value.response)
   paging.current = assistsData.value.paging.current
   paging.total = assistsData.value.paging.total
   itemsLoaded.complete = true
-  itemsLoaded.failed = !!assistsError
+  itemsLoaded.failed = !!assistsError.value
+  setToastMessage()
+  toastColor.value = itemsLoaded.failed ? 'bg-red-600' : 'bg-green-500'
+  toastBodyBorderColor.value = itemsLoaded.failed
+    ? 'border-red-500'
+    : 'border-green-400'
   setTimeout(() => {
     resetToast()
   }, 5000)
