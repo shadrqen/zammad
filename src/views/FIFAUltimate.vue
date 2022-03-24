@@ -23,11 +23,21 @@
       </div>
     </div>
   </div>
+  <base-toast
+    v-if="itemsLoaded.complete"
+    v-bind:toast-color="toastColor"
+    toast-title="Fetching Data"
+    toast-message="Data fetched successfully from the API"
+    toast-id="ultimate-team-toast"
+    v-bind:body-border-color="toastBodyBorderColor"
+  />
+  {{ itemsLoaded }}
 </template>
 
 <script setup lang="ts">
 import { onMounted, reactive, ref } from 'vue'
 import BaseTable from '../components/base/BaseTable.vue'
+import BaseToast from '../components/base/BaseToast.vue'
 import { getTopAssists, processListItems } from '../composables/assists'
 
 const headerRows = reactive([
@@ -48,12 +58,31 @@ const paging = reactive({
   current: 0,
   total: 0,
 })
+const itemsLoaded = reactive({
+  complete: false,
+  failed: false,
+})
+
+const toastColor = ref(itemsLoaded.failed ? 'bg-green-500' : 'bg-red-600')
+const toastBodyBorderColor = ref(
+  itemsLoaded.failed ? 'border-green-400' : 'border-red-500',
+)
+
+function resetToast() {
+  itemsLoaded.complete = false
+  itemsLoaded.failed = false
+}
 
 onMounted(async () => {
-  const { assistsData } = await getTopAssists()
+  const { assistsData, assistsError } = await getTopAssists()
   items.value = processListItems(assistsData.value.response)
   paging.current = assistsData.value.paging.current
   paging.total = assistsData.value.paging.total
+  itemsLoaded.complete = true
+  itemsLoaded.failed = !!assistsError
+  setTimeout(() => {
+    resetToast()
+  }, 5000)
 })
 </script>
 

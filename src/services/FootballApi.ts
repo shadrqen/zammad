@@ -1,6 +1,6 @@
 import http from '../http-common'
 import { TopAssistRequest, TopAssistResponse } from '../types/api'
-// import topAssistsResponseJSON from './response.json'
+import topAssistsResponseJSON from './response.json'
 
 export default class FootballApiService {
   static async getTopAssists(
