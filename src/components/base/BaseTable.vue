@@ -20,6 +20,7 @@
         >
           <div v-if="columnKey && columnKey === 'photo'" class="bg-indigo-300">
             <img
+              v-if="typeof columnVal === 'string'"
               class="object-cover"
               v-bind:src="columnVal"
               alt="Player photo"
