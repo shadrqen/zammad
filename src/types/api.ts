@@ -9,7 +9,7 @@ export interface TopAssistRequest {
 }
 
 export interface TopAssistResponse {
-  errors: string[]
+  errors: string | string[]
   get: string
   paging: Paging
   parameters: TopAssistRequest

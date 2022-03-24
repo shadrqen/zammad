@@ -1,6 +1,5 @@
 import http from '../http-common'
 import { TopAssistRequest, TopAssistResponse } from '../types/api'
-// import topAssistsResponseJSON from './response.json'
 
 export default class FootballApiService {
   static async getTopAssists(
@@ -14,8 +13,5 @@ export default class FootballApiService {
       },
     )
     return data
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    // return topAssistsResponseJSON
   }
 }

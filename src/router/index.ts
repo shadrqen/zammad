@@ -14,7 +14,7 @@ const mainRoutes: RouteRecordRaw[] = [
     path: '/',
     name: 'Home',
     props: true,
-    component: () => import('../views/FIFAUltimate.vue'),
+    component: () => import('../views/TopAssists.vue'),
   },
   {
     path: '/prev-home',
