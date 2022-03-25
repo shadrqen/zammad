@@ -1,5 +1,5 @@
 <template>
-  <base-table
+  <assists-table
     v-if="items"
     v-bind:header-rows="headerRows"
     v-bind:items="items"
@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
 import { onMounted, reactive, ref } from 'vue'
-import BaseTable from '../components/base/BaseTable.vue'
+import AssistsTable from '../components/AssistsTable.vue'
 import BaseToast from '../components/base/BaseToast.vue'
 import {
   getTopAssists,
@@ -62,10 +62,14 @@ function resetToast() {
   itemsLoaded.failed = false
 }
 
-function setToastMessage() {
+function setToastValues() {
   toastMessage.value = itemsLoaded.failed
     ? 'Failed to load data from the API'
     : 'Data fetched successfully from the API'
+  toastColor.value = itemsLoaded.failed ? 'bg-red-600' : 'bg-green-500'
+  toastBodyBorderColor.value = itemsLoaded.failed
+    ? 'border-red-500'
+    : 'border-green-400'
 }
 
 onMounted(async () => {
@@ -76,11 +80,7 @@ onMounted(async () => {
   paging.total = assistsData.value.paging.total
   itemsLoaded.complete = true
   itemsLoaded.failed = !!assistsError.value
-  setToastMessage()
-  toastColor.value = itemsLoaded.failed ? 'bg-red-600' : 'bg-green-500'
-  toastBodyBorderColor.value = itemsLoaded.failed
-    ? 'border-red-500'
-    : 'border-green-400'
+  setToastValues()
   setTimeout(() => {
     resetToast()
   }, 5000)
