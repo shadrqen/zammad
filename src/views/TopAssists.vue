@@ -5,22 +5,10 @@
     v-bind:items="items"
     v-bind:paging="paging"
   />
-  <div
-    v-else
-    class="border border-blue-300 shadow rounded-md p-4 max-w-sm w-full mx-auto mt-10"
-  >
-    <div class="animate-pulse flex space-x-4">
-      <div class="rounded-full bg-slate-200 h-10 w-10"></div>
-      <div class="flex-1 space-y-6 py-1">
-        <div class="h-2 bg-slate-200 rounded"></div>
-        <div class="space-y-3">
-          <div class="grid grid-cols-3 gap-4">
-            <div class="h-2 bg-slate-200 rounded col-span-2"></div>
-            <div class="h-2 bg-slate-200 rounded col-span-1"></div>
-          </div>
-          <div class="h-2 bg-slate-200 rounded"></div>
-        </div>
-      </div>
+  <div v-else class="loader">
+    <div class="lds-ripple">
+      <div></div>
+      <div></div>
     </div>
   </div>
   <base-toast
@@ -31,7 +19,6 @@
     toast-id="ultimate-team-toast"
     v-bind:body-border-color="toastBodyBorderColor"
   />
-  {{ itemsLoaded }}
 </template>
 
 <script setup lang="ts">
@@ -100,4 +87,43 @@ onMounted(async () => {
 })
 </script>
 
-<style scoped></style>
+<style scoped>
+.loader {
+  min-height: 80vh;
+  display: flex;
+}
+
+.lds-ripple {
+  margin: auto;
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.lds-ripple div {
+  position: absolute;
+  border: 4px solid #130a0a;
+  opacity: 1;
+  border-radius: 50%;
+  animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+.lds-ripple div:nth-child(2) {
+  animation-delay: -0.5s;
+}
+@keyframes lds-ripple {
+  0% {
+    top: 36px;
+    left: 36px;
+    width: 0;
+    height: 0;
+    opacity: 1;
+  }
+  100% {
+    top: 0;
+    left: 0;
+    width: 72px;
+    height: 72px;
+    opacity: 0;
+  }
+}
+</style>
